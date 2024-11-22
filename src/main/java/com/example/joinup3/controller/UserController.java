@@ -15,14 +15,13 @@ public class UserController {
         this.userService = userService;
     }
 
-
     // 모든 유저 조회
     @GetMapping
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    // 특정 유저 조회 (ID로)
+    // 특정 유저 조회 (로그인 ID로)
     @GetMapping("/{id}")
     public User getUserById(@PathVariable String id) {
         return userService.getUserById(id);
@@ -34,10 +33,10 @@ public class UserController {
         return userService.createUser(user);
     }
 
-    // 유저 삭제
-    @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable Integer userId) {
-        userService.deleteUser(userId);
+    // 유저 삭제 (로그인 ID로 삭제)
+    @DeleteMapping("/{id}")
+    public String deleteUserById(@PathVariable String id) {
+        userService.deleteUserById(id);
         return "User deleted successfully";
     }
 }

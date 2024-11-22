@@ -2,7 +2,6 @@ package com.example.joinup3.service;
 
 import com.example.joinup3.entity.MakeChallenge;
 import com.example.joinup3.repository.MakeChallengeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,41 +11,45 @@ public class MakeChallengeService {
 
     private final MakeChallengeRepository makeChallengeRepository;
 
-    @Autowired
     public MakeChallengeService(MakeChallengeRepository makeChallengeRepository) {
         this.makeChallengeRepository = makeChallengeRepository;
     }
 
-    // Create a new challenge
-    public MakeChallenge createChallenge(MakeChallenge makeChallenge) {
-        return makeChallengeRepository.save(makeChallenge);
-    }
-
-    // Get all challenges
+    // 모든 챌린지 조회
     public List<MakeChallenge> getAllChallenges() {
         return makeChallengeRepository.findAll();
     }
 
-    // Get a challenge by ID
-    public MakeChallenge getChallengeById(Long challengeId) {
+    // 특정 챌린지 조회
+    public MakeChallenge getChallengeById(Integer challengeId) {
         return makeChallengeRepository.findById(challengeId)
-                .orElseThrow(() -> new RuntimeException("Challenge not found with ID: " + challengeId));
+                .orElseThrow(() -> new RuntimeException("Challenge not found with id: " + challengeId));
     }
 
-    // Update a challenge
-    public MakeChallenge updateChallenge(Long challengeId, MakeChallenge updatedChallenge) {
+    // 챌린지 생성
+    public MakeChallenge createChallenge(MakeChallenge makeChallenge) {
+        return makeChallengeRepository.save(makeChallenge);
+    }
+
+    // 챌린지 수정
+    public MakeChallenge updateChallenge(Integer challengeId, MakeChallenge updatedChallenge) {
         MakeChallenge existingChallenge = getChallengeById(challengeId);
         existingChallenge.setTitle(updatedChallenge.getTitle());
         existingChallenge.setDescription(updatedChallenge.getDescription());
         existingChallenge.setStartDate(updatedChallenge.getStartDate());
         existingChallenge.setEndDate(updatedChallenge.getEndDate());
-        existingChallenge.setDailyCount(updatedChallenge.getDailyCount());
-        existingChallenge.setTotalDays(updatedChallenge.getTotalDays());
+        existingChallenge.setFrequency(updatedChallenge.getFrequency());
+        existingChallenge.setMaxFrequency(updatedChallenge.getMaxFrequency());
+        existingChallenge.setBackgroundColor(updatedChallenge.getBackgroundColor());
+        existingChallenge.setIcon(updatedChallenge.getIcon());
+        existingChallenge.setParticipation(updatedChallenge.getParticipation());
+        existingChallenge.setProofBoard(updatedChallenge.getProofBoard());
         return makeChallengeRepository.save(existingChallenge);
     }
 
-    // Delete a challenge
-    public void deleteChallenge(Long challengeId) {
-        makeChallengeRepository.deleteById(challengeId);
+    // 챌린지 삭제
+    public void deleteChallenge(Integer challengeId) {
+        MakeChallenge challenge = getChallengeById(challengeId);
+        makeChallengeRepository.delete(challenge);
     }
 }

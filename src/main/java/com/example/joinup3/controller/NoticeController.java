@@ -2,8 +2,6 @@ package com.example.joinup3.controller;
 
 import com.example.joinup3.entity.Notice;
 import com.example.joinup3.service.NoticeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,41 +10,40 @@ import java.util.List;
 @RequestMapping("/api/notices")
 public class NoticeController {
 
-    @Autowired
-    private NoticeService noticeService;
+    private final NoticeService noticeService;
 
-    // 공지사항 생성
-    @PostMapping("/create")
-    public ResponseEntity<Notice> createNotice(@RequestBody Notice notice) {
-        Notice createdNotice = noticeService.createNotice(notice);
-        return ResponseEntity.ok(createdNotice);
+    public NoticeController(NoticeService noticeService) {
+        this.noticeService = noticeService;
     }
 
-    // 모든 공지사항 조회
+    // 모든 공지 조회
     @GetMapping
-    public ResponseEntity<List<Notice>> getAllNotices() {
-        List<Notice> notices = noticeService.getAllNotices();
-        return ResponseEntity.ok(notices);
+    public List<Notice> getAllNotices() {
+        return noticeService.getAllNotices();
     }
 
-    // 특정 공지사항 조회
+    // 특정 공지 조회
     @GetMapping("/{noticeId}")
-    public ResponseEntity<Notice> getNoticeById(@PathVariable Long noticeId) {
-        Notice notice = noticeService.getNoticeById(noticeId);
-        return ResponseEntity.ok(notice);
+    public Notice getNoticeById(@PathVariable Long noticeId) {
+        return noticeService.getNoticeById(noticeId);
     }
 
-    // 공지사항 수정
+    // 공지 생성
+    @PostMapping
+    public Notice createNotice(@RequestBody Notice notice) {
+        return noticeService.createNotice(notice);
+    }
+
+    // 공지 수정
     @PutMapping("/{noticeId}")
-    public ResponseEntity<Notice> updateNotice(@PathVariable Long noticeId, @RequestBody Notice notice) {
-        Notice updatedNotice = noticeService.updateNotice(noticeId, notice);
-        return ResponseEntity.ok(updatedNotice);
+    public Notice updateNotice(@PathVariable Long noticeId, @RequestBody Notice updatedNotice) {
+        return noticeService.updateNotice(noticeId, updatedNotice);
     }
 
-    // 공지사항 삭제
+    // 공지 삭제
     @DeleteMapping("/{noticeId}")
-    public ResponseEntity<Void> deleteNotice(@PathVariable Long noticeId) {
+    public String deleteNotice(@PathVariable Long noticeId) {
         noticeService.deleteNotice(noticeId);
-        return ResponseEntity.noContent().build();
+        return "Notice deleted successfully";
     }
 }

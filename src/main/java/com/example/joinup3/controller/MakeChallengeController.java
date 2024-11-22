@@ -2,8 +2,6 @@ package com.example.joinup3.controller;
 
 import com.example.joinup3.entity.MakeChallenge;
 import com.example.joinup3.service.MakeChallengeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,42 +12,38 @@ public class MakeChallengeController {
 
     private final MakeChallengeService makeChallengeService;
 
-    @Autowired
     public MakeChallengeController(MakeChallengeService makeChallengeService) {
         this.makeChallengeService = makeChallengeService;
     }
 
-    // Create a new challenge
-    @PostMapping
-    public ResponseEntity<MakeChallenge> createChallenge(@RequestBody MakeChallenge makeChallenge) {
-        return ResponseEntity.ok(makeChallengeService.createChallenge(makeChallenge));
-    }
-
-    // Get all challenges
+    // 모든 챌린지 조회
     @GetMapping
-    public ResponseEntity<List<MakeChallenge>> getAllChallenges() {
-        return ResponseEntity.ok(makeChallengeService.getAllChallenges());
+    public List<MakeChallenge> getAllChallenges() {
+        return makeChallengeService.getAllChallenges();
     }
 
-    // Get a challenge by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<MakeChallenge> getChallengeById(@PathVariable Long id) {
-        return ResponseEntity.ok(makeChallengeService.getChallengeById(id));
+    // 특정 챌린지 조회
+    @GetMapping("/{challengeId}")
+    public MakeChallenge getChallengeById(@PathVariable Integer challengeId) {
+        return makeChallengeService.getChallengeById(challengeId);
     }
 
-    // Update a challenge
-    @PutMapping("/{id}")
-    public ResponseEntity<MakeChallenge> updateChallenge(
-            @PathVariable Long id,
-            @RequestBody MakeChallenge updatedChallenge
-    ) {
-        return ResponseEntity.ok(makeChallengeService.updateChallenge(id, updatedChallenge));
+    // 챌린지 생성
+    @PostMapping
+    public MakeChallenge createChallenge(@RequestBody MakeChallenge makeChallenge) {
+        return makeChallengeService.createChallenge(makeChallenge);
     }
 
-    // Delete a challenge
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteChallenge(@PathVariable Long id) {
-        makeChallengeService.deleteChallenge(id);
-        return ResponseEntity.noContent().build();
+    // 챌린지 수정
+    @PutMapping("/{challengeId}")
+    public MakeChallenge updateChallenge(@PathVariable Integer challengeId, @RequestBody MakeChallenge updatedChallenge) {
+        return makeChallengeService.updateChallenge(challengeId, updatedChallenge);
+    }
+
+    // 챌린지 삭제
+    @DeleteMapping("/{challengeId}")
+    public String deleteChallenge(@PathVariable Integer challengeId) {
+        makeChallengeService.deleteChallenge(challengeId);
+        return "Challenge deleted successfully";
     }
 }

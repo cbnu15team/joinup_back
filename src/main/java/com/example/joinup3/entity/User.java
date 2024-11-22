@@ -7,28 +7,25 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "users") // DB의 User 테이블과 매핑
+@Table(name = "users") // DB의 users 테이블과 매핑
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto Increment 설정
-    @Column(name = "USER_ID")
+    @Column(name = "user_id") // PRIMARY KEY
     private Integer userId;
 
-    @Column(name = "NAME", nullable = false, length = 20)
-    private String name;
-
-    @Column(name = "BIRTH", nullable = false, length = 8)
-    private String birth;
-
-    @Column(name = "PHONE", nullable = false, unique = true, length = 11)
-    private String phone;
-
-    @Column(name = "USERNAME", nullable = false, length = 20)
-    private String username;
-
-    @Column(name = "ID", nullable = false, unique = true, length = 20)
+    @Column(name = "id", nullable = false, unique = true, length = 10) // 로그인 ID
     private String id;
 
-    @Column(name = "PASSWORD", nullable = false)
-    private String password;
+    @Column(name = "passwords", nullable = false, length = 10) // 로그인 비밀번호
+    private String passwords;
+
+    @Column(name = "real_name", nullable = false, length = 20) // 사용자 실명
+    private String realName;
+
+    @Column(name = "birth", nullable = false, length = 8) // 생년월일
+    private String birth;
+
+    @Column(name = "phone", nullable = false, unique = true, length = 11) // 전화번호
+    private String phone;
 }

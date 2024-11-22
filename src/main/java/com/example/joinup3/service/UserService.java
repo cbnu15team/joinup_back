@@ -19,19 +19,22 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    // ID로 유저 조회
+    // 특정 유저 조회 (로그인 ID로)
     public User getUserById(String id) {
-        return userRepository.findById(id);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-    // 새로운 유저 생성
+    // 유저 생성
     public User createUser(User user) {
         return userRepository.save(user);
     }
 
-    // 유저 삭제
-    public void deleteUser(Integer userId) {
-        userRepository.deleteById(userId);
+    // 유저 삭제 (로그인 ID로 삭제)
+    public void deleteUserById(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        userRepository.delete(user);
     }
-
 }
+
