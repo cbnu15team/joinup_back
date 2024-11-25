@@ -3,7 +3,8 @@ package com.example.joinup3.controller;
 import com.example.joinup3.entity.User;
 import com.example.joinup3.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import java.util.List;
 
 @RestController
@@ -29,8 +30,14 @@ public class UserController {
 
     // 유저 생성
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        try {
+            User savedUser = userService.createUser(user);
+            return ResponseEntity.ok(savedUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패: " + e.getMessage());
+        }
     }
 
     // 유저 삭제 (로그인 ID로 삭제)
